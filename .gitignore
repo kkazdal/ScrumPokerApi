@@ -1,0 +1,52 @@
+# Derleme çıktıları
+**/bin/
+**/obj/
+
+# DLL ve derleme çıktıları
+*.dll
+*.exe
+*.pdb
+
+# Kullanıcıya özel ayar dosyaları
+*.user
+*.suo
+
+# Visual Studio çalışma dosyaları
+.vscode/
+.vs/
+.idea/
+
+# NuGet paketleri ve kilit dosyaları
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Logs
+*.log
+
+# Rider veya diğer IDE'ler
+.idea/
+*.sln.iml
+
+# Proje kilit dosyaları
+project.lock.json
+project.fragment.lock.json
+
+# Çöp dosyalar (işletim sistemi veya temp dosyaları)
+.DS_Store
+Thumbs.db
+
+# ASP.NET Temporary Files
+**/App_Data/
+
+# Web projeleri
+node_modules/
+wwwroot/dist/
+wwwroot/**/*.map
+
+# Test sonuçları
+TestResults/
+
+# Artifacts
+artifacts/
