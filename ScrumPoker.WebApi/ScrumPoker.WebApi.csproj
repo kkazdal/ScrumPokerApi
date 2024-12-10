@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Infrastructure/ScrumPoker.Infrastructure.csproj" />
+    <ProjectReference Include="../ScrumPoker.Infrastructure/ScrumPoker.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
