@@ -1,0 +1,11 @@
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/bin/Debug/net8.0/ScrumPoker.Domain.deps.json
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/bin/Debug/net8.0/ScrumPoker.Domain.dll
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/bin/Debug/net8.0/ScrumPoker.Domain.pdb
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/obj/Debug/net8.0/ScrumPoker.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/obj/Debug/net8.0/ScrumPoker.Domain.AssemblyInfoInputs.cache
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/obj/Debug/net8.0/ScrumPoker.Domain.AssemblyInfo.cs
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/obj/Debug/net8.0/ScrumPoker.Domain.csproj.CoreCompileInputs.cache
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/obj/Debug/net8.0/ScrumPoker.Domain.dll
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/obj/Debug/net8.0/refint/ScrumPoker.Domain.dll
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/obj/Debug/net8.0/ScrumPoker.Domain.pdb
+/Users/kadirkazdal/Desktop/Projects/Backend/ScrumPokerProject/ScrumPoker.Domain/obj/Debug/net8.0/ref/ScrumPoker.Domain.dll

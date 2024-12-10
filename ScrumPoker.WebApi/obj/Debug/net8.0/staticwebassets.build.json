@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "nRWDWWul+x3skDBzmDHy8uyQIKY+fvwmCtMuMqTFoj8=",
+  "Source": "ScrumPoker.WebApi",
+  "BasePath": "_content/ScrumPoker.WebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
