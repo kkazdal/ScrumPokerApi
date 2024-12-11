@@ -33,8 +33,9 @@ namespace ScrumPoker.Infrastructure.Migrations
                     b.Property<DateTime>("JoinedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("SessionId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("SessionId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -47,11 +48,11 @@ namespace ScrumPoker.Infrastructure.Migrations
 
             modelBuilder.Entity("ScrumPoker.Domain.Entities.UserRoom", b =>
                 {
-                    b.Property<int>("UserRoomId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserRoomId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsHost")
                         .HasColumnType("boolean");
@@ -65,13 +66,35 @@ namespace ScrumPoker.Infrastructure.Migrations
                     b.Property<int?>("TempUserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("UserRoomId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
                     b.HasIndex("TempUserId");
 
                     b.ToTable("UserRooms");
+                });
+
+            modelBuilder.Entity("ScrumPoker.Domain.Entities.UserVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("UserRoomId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Vote")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserRoomId");
+
+                    b.ToTable("UserVotes");
                 });
 
             modelBuilder.Entity("ScrumPoker.Domain.Room", b =>
@@ -112,6 +135,17 @@ namespace ScrumPoker.Infrastructure.Migrations
                     b.Navigation("Room");
 
                     b.Navigation("TempUser");
+                });
+
+            modelBuilder.Entity("ScrumPoker.Domain.Entities.UserVote", b =>
+                {
+                    b.HasOne("ScrumPoker.Domain.Entities.UserRoom", "UserRoom")
+                        .WithMany()
+                        .HasForeignKey("UserRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserRoom");
                 });
 
             modelBuilder.Entity("ScrumPoker.Domain.Entities.TemporaryUser", b =>

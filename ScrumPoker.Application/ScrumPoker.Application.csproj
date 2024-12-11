@@ -16,4 +16,8 @@
     <ProjectReference Include="../ScrumPoker.Domain/ScrumPoker.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mediator/Commands/UserVoteCommands/" />
+  </ItemGroup>
+
 </Project>

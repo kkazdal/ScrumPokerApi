@@ -12,10 +12,26 @@ public class Repository<T> : IRepository<T> where T : class
     {
         _context = context;
     }
-    public async Task CreateAsync(T entity)
+    public async Task<int> CreateAsync(T entity)
     {
         _context.Set<T>().Add(entity);
         await _context.SaveChangesAsync();
+
+        // "Id" özelliği var mı diye kontrol et
+        var idProperty = typeof(T).GetProperty("Id");
+        if (idProperty == null)
+        {
+            throw new InvalidOperationException($"Entity of type {typeof(T).Name} does not have an 'Id' property.");
+        }
+
+        // "Id" property'sinin değerini al
+        var idValue = idProperty.GetValue(entity);
+        if (idValue == null)
+        {
+            throw new InvalidOperationException("The 'Id' property was not set after saving the entity.");
+        }
+
+        return (int)idValue; // ID değeri döndürülüyor
     }
 
     public async Task<List<T>> GetAllAsync()

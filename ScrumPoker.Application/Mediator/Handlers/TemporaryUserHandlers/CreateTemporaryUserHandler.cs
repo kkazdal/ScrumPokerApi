@@ -25,12 +25,12 @@ public class CreateTemporaryUserHandler : IRequestHandler<CreateTemporaryUserCom
             Username = request.Username,
         };
 
-        await _repository.CreateAsync(temporaryUser);
+        int TemporaryUserId = await _repository.CreateAsync(temporaryUser);
 
 
         return new CreateTemporaryUserResult
         {
-            Id = temporaryUser.Id,
+            Id = TemporaryUserId,
             JoinedAt = temporaryUser.JoinedAt,
             SessionId = temporaryUser.SessionId,
             Username = temporaryUser.Username

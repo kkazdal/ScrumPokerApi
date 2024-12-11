@@ -26,6 +26,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSaveApplicationService(builder.Configuration);//Mediator için dependency injection yapıldı
 
+builder.Services.AddSwaggerGen(c =>
+        {
+            c.EnableAnnotations(); // Swagger açıklamalarını etkinleştirin
+        });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -4,8 +4,7 @@ namespace ScrumPoker.Domain.Entities;
 
 public class UserRoom
 {
-    public int UserRoomId { get; set; }
-
+    public int Id { get; set; }
     // Geçici kullanıcı ilişkisi
     public int? TempUserId { get; set; }
     public TemporaryUser TempUser { get; set; }

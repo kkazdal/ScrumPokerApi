@@ -7,46 +7,28 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ScrumPoker.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Mig5 : Migration
+    public partial class Mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "RowNumber",
-                table: "Room",
-                newName: "RoomUniqId");
-
-            migrationBuilder.RenameColumn(
-                name: "CreatedDate",
-                table: "Room",
-                newName: "CreatedAt");
-
-            migrationBuilder.AddColumn<string>(
-                name: "RoomName",
-                table: "Room",
-                type: "text",
-                nullable: false,
-                defaultValue: "");
-
             migrationBuilder.CreateTable(
-                name: "RegisteredUser",
+                name: "Rooms",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Username = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    RoomName = table.Column<string>(type: "text", nullable: false),
+                    RoomUniqId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RegisteredUser", x => x.Id);
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TemporaryUser",
+                name: "TemporaryUsers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -57,84 +39,86 @@ namespace ScrumPoker.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TemporaryUser", x => x.Id);
+                    table.PrimaryKey("PK_TemporaryUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRoom",
+                name: "UserRooms",
                 columns: table => new
                 {
-                    UserRoomId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: true),
                     TempUserId = table.Column<int>(type: "integer", nullable: true),
                     RoomId = table.Column<int>(type: "integer", nullable: false),
                     JoinedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    IsHost = table.Column<bool>(type: "boolean", nullable: false),
-                    IsTemporary = table.Column<bool>(type: "boolean", nullable: false)
+                    IsHost = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoom", x => x.UserRoomId);
+                    table.PrimaryKey("PK_UserRooms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserRoom_RegisteredUser_UserId",
-                        column: x => x.UserId,
-                        principalTable: "RegisteredUser",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserRoom_Room_RoomId",
+                        name: "FK_UserRooms_Rooms_RoomId",
                         column: x => x.RoomId,
-                        principalTable: "Room",
+                        principalTable: "Rooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRoom_TemporaryUser_TempUserId",
+                        name: "FK_UserRooms_TemporaryUsers_TempUserId",
                         column: x => x.TempUserId,
-                        principalTable: "TemporaryUser",
+                        principalTable: "TemporaryUsers",
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserVotes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserRoomId = table.Column<int>(type: "integer", nullable: false),
+                    Vote = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserVotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserVotes_UserRooms_UserRoomId",
+                        column: x => x.UserRoomId,
+                        principalTable: "UserRooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoom_RoomId",
-                table: "UserRoom",
+                name: "IX_UserRooms_RoomId",
+                table: "UserRooms",
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoom_TempUserId",
-                table: "UserRoom",
+                name: "IX_UserRooms_TempUserId",
+                table: "UserRooms",
                 column: "TempUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoom_UserId",
-                table: "UserRoom",
-                column: "UserId");
+                name: "IX_UserVotes_UserRoomId",
+                table: "UserVotes",
+                column: "UserRoomId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserRoom");
+                name: "UserVotes");
 
             migrationBuilder.DropTable(
-                name: "RegisteredUser");
+                name: "UserRooms");
 
             migrationBuilder.DropTable(
-                name: "TemporaryUser");
+                name: "Rooms");
 
-            migrationBuilder.DropColumn(
-                name: "RoomName",
-                table: "Room");
-
-            migrationBuilder.RenameColumn(
-                name: "RoomUniqId",
-                table: "Room",
-                newName: "RowNumber");
-
-            migrationBuilder.RenameColumn(
-                name: "CreatedAt",
-                table: "Room",
-                newName: "CreatedDate");
+            migrationBuilder.DropTable(
+                name: "TemporaryUsers");
         }
     }
 }
