@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Application.Mediator.Commands.RoomCommands;
+using ScrumPoker.Application.Mediator.Queries.RoomQueries;
 
 namespace ScrumPoker.WebApi.Controllers
 {
@@ -14,6 +15,13 @@ namespace ScrumPoker.WebApi.Controllers
         public RoomController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet("GetRoomByIdQuery")]
+        public async Task<IActionResult> GetRoomByIdQuery([FromQuery] GetRoomByQuery query)
+        {
+            var response = await _mediator.Send(query);
+            return Ok(response);
         }
 
         [HttpPost("CreateRoom")]
