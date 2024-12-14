@@ -66,6 +66,7 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
         return new FirstCreateUserRoomResult
         {
             RoomUniqId = roomUniqId,
+            TemporaryUserId = temporaryUser.Id
         };
     }
 }

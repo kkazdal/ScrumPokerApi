@@ -14,5 +14,5 @@ public class UserRoom
 
     public DateTime JoinedAt { get; set; }
     public bool IsHost { get; set; } //Kullanıcı odanın sahibi mi?
-    public string UserVote { get; set; }//Kullanıcının verdiği oy
+    public string? UserVote { get; set; }//Kullanıcının verdiği oy
 }
