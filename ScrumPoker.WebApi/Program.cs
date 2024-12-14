@@ -6,7 +6,7 @@ using ScrumPoker.Application.Services;
 using ScrumPoker.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddHttpClient();
 
 // Bağlantı dizesini çek
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
