@@ -37,7 +37,8 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
         {
             CreatedAt = DateTime.Now.ToUniversalTime(),
             RoomName = roomName,
-            RoomUniqId = roomUniqId
+            RoomUniqId = roomUniqId,
+            EstimationMethodId = request.EstimationMethodId
         };
 
         //Önce oda oluşturuldu
@@ -60,7 +61,6 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
             JoinedAt = DateTime.Now.ToUniversalTime(),
             RoomId = roomId,
             TempUserId = TemporaryUserId,
-            EstimationMethodId = request.EstimationMethodId
         });
 
         return new FirstCreateUserRoomResult

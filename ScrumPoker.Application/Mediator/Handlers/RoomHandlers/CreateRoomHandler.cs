@@ -30,7 +30,7 @@ public class CreateRoomHandler : IRequestHandler<CreateRoomCommand, CreateRoomRe
         {
             CreatedAt = DateTime.Now.ToUniversalTime(),
             RoomName = roomName,
-            RoomUniqId = roomUniqId
+            RoomUniqId = roomUniqId,
         };
 
         await _repository.CreateAsync(room);
@@ -38,7 +38,7 @@ public class CreateRoomHandler : IRequestHandler<CreateRoomCommand, CreateRoomRe
         return new CreateRoomResult
         {
             Id = room.Id,
-            RoomUniqId = room.RoomUniqId
+            RoomUniqId = room.RoomUniqId,
         };
     }
 }

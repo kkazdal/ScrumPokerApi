@@ -24,7 +24,8 @@ public class GetRoomQueryListHandler : IRequestHandler<GetRoomByQuery, GetRoomBy
             Id = response.Id,
             CreatedAt = response.CreatedAt,
             RoomName = response.RoomName,
-            RoomUniqId = response.RoomUniqId
+            RoomUniqId = response.RoomUniqId,
+            EstimationMethodId = response.EstimationMethodId
         };
     }
 }
