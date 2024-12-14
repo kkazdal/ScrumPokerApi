@@ -17,5 +17,4 @@ public class ApplicationDbContext : DbContext
     public DbSet<UserRoom> UserRooms { get; set; }
     public DbSet<TemporaryUser> TemporaryUsers { get; set; }
     public DbSet<UserVote> UserVotes { get; set; }
-
 }

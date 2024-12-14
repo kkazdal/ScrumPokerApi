@@ -14,4 +14,6 @@ public class UserRoom
 
     public DateTime JoinedAt { get; set; }
     public bool IsHost { get; set; } //Kullanıcı odanın sahibi mi?
+    public int EstimationMethodId { get; set; }//fibo, short fibo, t-shirt, t-shirt & numbers, custom
+    public ICollection<UserVote> UserVote { get; set; }
 }

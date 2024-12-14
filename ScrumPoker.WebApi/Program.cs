@@ -11,6 +11,19 @@ builder.Services.AddHttpClient();
 // Bağlantı dizesini çek
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", builder =>
+    {
+        builder
+            .WithOrigins("http://localhost:3000")  // Yalnızca bu kaynağa izin ver(WebUI)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();  // Kimlik doğrulama bilgilerine izin ver
+    });
+});
+// builder.Services.AddSignalR();
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 // DbContext'i hizmet olarak ekle
@@ -63,7 +76,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers(); // Controller rotalarını uygulamaya dahil eder
-
+app.UseCors("CorsPolicy");
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

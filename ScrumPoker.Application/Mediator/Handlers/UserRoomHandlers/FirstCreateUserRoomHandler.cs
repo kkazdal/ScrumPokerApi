@@ -2,12 +2,13 @@ using System;
 using MediatR;
 using ScrumPoker.Application.Interfaces;
 using ScrumPoker.Application.Mediator.Commands.UserRoom;
+using ScrumPoker.Application.Mediator.Results.UserRoomResults;
 using ScrumPoker.Domain;
 using ScrumPoker.Domain.Entities;
 
 namespace ScrumPoker.Application.Mediator.Handlers.UserRoomHandlers;
 
-public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCommand>
+public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCommand, FirstCreateUserRoomResult>
 {
     private readonly IRepository<UserRoom> _UserRoomRepository;
     private readonly IRepository<Room> _RoomRepository;
@@ -20,7 +21,7 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
         _TemporaryUserRepository = TemporaryUserRepository;
     }
 
-    public async Task Handle(FirstCreateUserRoomCommand request, CancellationToken cancellationToken)
+    public async Task<FirstCreateUserRoomResult> Handle(FirstCreateUserRoomCommand request, CancellationToken cancellationToken)
     {
         //#region ROOM
         //Burası ilk oda oluşturulacağı zaman çağrılacak
@@ -59,7 +60,12 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
             JoinedAt = DateTime.Now.ToUniversalTime(),
             RoomId = roomId,
             TempUserId = TemporaryUserId,
+            EstimationMethodId = request.EstimationMethodId
         });
 
+        return new FirstCreateUserRoomResult
+        {
+            RoomUniqId = roomUniqId,
+        };
     }
 }
