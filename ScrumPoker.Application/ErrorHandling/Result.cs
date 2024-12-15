@@ -1,15 +1,15 @@
 using System;
 
-namespace ScrumPoker.Application.ErrorHandling;
+namespace ScrumPoker.Application.BaseResponse;
 
-public class ErrorHandling<T>
+public class BaseResponse<T>
 {
     public bool IsSuccess { get; }
     public T? Data { get; }
     public string ErrorMessage { get; }
     public string ErrorCode { get; }
 
-    private ErrorHandling(bool isSuccess, T data, string errorMessage = "", string errorCode = "")
+    private BaseResponse(bool isSuccess, T data, string errorMessage = "", string errorCode = "")
     {
         IsSuccess = isSuccess;
         Data = data;
@@ -17,6 +17,6 @@ public class ErrorHandling<T>
         ErrorCode = errorCode;
     }
 
-    public static ErrorHandling<T> Success(T data) => new ErrorHandling<T>(true, data);
-    public static ErrorHandling<T> Failure(string errorMessage, string errorCode) => new ErrorHandling<T>(false, default, errorMessage, errorCode);
+    public static BaseResponse<T> Success(T data) => new BaseResponse<T>(true, data);
+    public static BaseResponse<T> Failure(string errorMessage, string errorCode) => new BaseResponse<T>(false, default, errorMessage, errorCode);
 }

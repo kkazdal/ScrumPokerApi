@@ -1,6 +1,6 @@
 using System;
 using MediatR;
-using ScrumPoker.Application.ErrorHandling;
+using ScrumPoker.Application.BaseResponse;
 using ScrumPoker.Application.Interfaces;
 using ScrumPoker.Application.Interfaces.IRoomRepository;
 using ScrumPoker.Application.Mediator.Commands.UserRoomCommands;
@@ -10,7 +10,7 @@ using ScrumPoker.Domain.Entities;
 
 namespace ScrumPoker.Application.Mediator.Handlers.UserRoomHandlers;
 
-public class CreateUserRoomHandler : IRequestHandler<CreateUserRoomCommand, ErrorHandling<CreateUserRoomResult>>
+public class CreateUserRoomHandler : IRequestHandler<CreateUserRoomCommand, BaseResponse<CreateUserRoomResult>>
 {
     private readonly IRepository<UserRoom> _userRoomRepository;
     private readonly IRepository<TemporaryUser> _temporaryUserRepository;
@@ -30,13 +30,13 @@ public class CreateUserRoomHandler : IRequestHandler<CreateUserRoomCommand, Erro
         _customRoomRepository = customRoomRepository;
     }
 
-    public async Task<ErrorHandling<CreateUserRoomResult>> Handle(CreateUserRoomCommand request, CancellationToken cancellationToken)
+    public async Task<BaseResponse<CreateUserRoomResult>> Handle(CreateUserRoomCommand request, CancellationToken cancellationToken)
     {
         var room = await _customRoomRepository.GetRoomByRoomUniqueId(request.RoomUniqId);
 
         if (room == null)
         {
-            return ErrorHandling<CreateUserRoomResult>.Failure("Session not found.", "404");
+            return BaseResponse<CreateUserRoomResult>.Failure("Session not found.", "404");
         }
 
         TemporaryUser temporaryUser = new TemporaryUser
@@ -63,6 +63,6 @@ public class CreateUserRoomHandler : IRequestHandler<CreateUserRoomCommand, Erro
             Message = "Success"
         };
 
-        return ErrorHandling<CreateUserRoomResult>.Success(result);
+        return BaseResponse<CreateUserRoomResult>.Success(result);
     }
 }
