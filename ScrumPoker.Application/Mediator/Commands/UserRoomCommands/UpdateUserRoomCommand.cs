@@ -8,6 +8,7 @@ namespace ScrumPoker.Application.Mediator.Commands.UserRoomCommands;
 public class UpdateUserRoomCommand : IRequest<BaseResponse<UpdateUserRoomResult>>
 {
     public int UserRoomId { get; set; }
+    public long RoomUniqId { get; set; }
     public string UserVote { get; set; }//Kullanıcının verdiği oy
 
 }

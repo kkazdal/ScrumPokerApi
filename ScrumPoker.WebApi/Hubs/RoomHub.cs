@@ -30,22 +30,6 @@ public class RoomHub : Hub
         await Clients.Group(roomUniqId).SendAsync("ReceiveRoomData", response);
     }
 
-    // private async Task<List<GetUserRoomListByRoomIdResult>> GetRoomData(string roomUniqId)
-    // {
-    //     var response = await (from userRoom in _dbContext.UserRooms
-    //                           where userRoom.RoomUniqId == (long)Convert.ToDouble(roomUniqId)
-    //                           join temporaryUser in _dbContext.TemporaryUsers
-    //                           on userRoom.TempUserId equals temporaryUser.Id
-    //                           select new GetUserRoomListByRoomIdResult
-    //                           {
-    //                               UserName = temporaryUser.Username,
-    //                               UserVote = userRoom.UserVote
-    //                           }).ToListAsync();
-
-    //     return response;
-    // }
-
-
     // Odadan ayrılma
     public async Task LeaveRoom(string roomId)
     {
