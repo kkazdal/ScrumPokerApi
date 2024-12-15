@@ -39,8 +39,14 @@ namespace ScrumPoker.WebApi.Controllers
         ]
         public async Task<IActionResult> CreateUserRoom([FromBody] CreateUserRoomCommand createUserRoomCommand)
         {
-            await _mediator.Send(createUserRoomCommand);
-            return Ok("Kayıt başarılı");
+            var result = await _mediator.Send(createUserRoomCommand);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { result.ErrorMessage, result.ErrorCode });
+            }
+
+            return Ok(result.Data);
         }
 
         [HttpGet("GetUserRoomListByRoomId")]
