@@ -2,14 +2,14 @@ using System;
 
 namespace ScrumPoker.Application.ErrorHandling;
 
-public class Result<T>
+public class ErrorHandling<T>
 {
     public bool IsSuccess { get; }
     public T? Data { get; }
     public string ErrorMessage { get; }
     public string ErrorCode { get; }
 
-    private Result(bool isSuccess, T data, string errorMessage = "", string errorCode = "")
+    private ErrorHandling(bool isSuccess, T data, string errorMessage = "", string errorCode = "")
     {
         IsSuccess = isSuccess;
         Data = data;
@@ -17,6 +17,6 @@ public class Result<T>
         ErrorCode = errorCode;
     }
 
-    public static Result<T> Success(T data) => new Result<T>(true, data);
-    public static Result<T> Failure(string errorMessage, string errorCode) => new Result<T>(false, default, errorMessage, errorCode);
+    public static ErrorHandling<T> Success(T data) => new ErrorHandling<T>(true, data);
+    public static ErrorHandling<T> Failure(string errorMessage, string errorCode) => new ErrorHandling<T>(false, default, errorMessage, errorCode);
 }
