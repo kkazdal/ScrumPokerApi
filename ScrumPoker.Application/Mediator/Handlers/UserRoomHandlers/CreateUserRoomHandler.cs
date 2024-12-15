@@ -60,7 +60,8 @@ public class CreateUserRoomHandler : IRequestHandler<CreateUserRoomCommand, Base
 
         var result = new CreateUserRoomResult
         {
-            Message = "Success"
+            Message = "Success.",
+            TemporaryUserId = temporaryUser.Id
         };
 
         return BaseResponse<CreateUserRoomResult>.Success(result);

@@ -2,8 +2,8 @@ using System;
 
 namespace ScrumPoker.Application.Mediator.Results.UserRoomResults;
 
-public class CreateUserRoomResult
+public class UpdateUserRoomResult
 {
     public string Message { get; set; }
-    public int TemporaryUserId { get; set; }
+
 }

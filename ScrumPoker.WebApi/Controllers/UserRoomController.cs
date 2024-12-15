@@ -56,5 +56,11 @@ namespace ScrumPoker.WebApi.Controllers
             return Ok(response);
         }
 
+        [HttpPut("UpdateUserRoom")]
+        public async Task<IActionResult> UpdateUserRoom(UpdateUserRoomCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
     }
 }
