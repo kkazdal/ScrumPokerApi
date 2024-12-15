@@ -2,8 +2,12 @@ using AspNetCoreRateLimit;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Application.Interfaces;
+using ScrumPoker.Application.Interfaces.IRoomRepository;
+using ScrumPoker.Application.Interfaces.UserRoomInterfaces;
 using ScrumPoker.Application.Services;
 using ScrumPoker.Infrastructure.Repositories;
+using ScrumPoker.Infrastructure.Repositories.RoomRepository;
+using ScrumPoker.Infrastructure.Repositories.UserRoomRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -25,6 +29,9 @@ builder.Services.AddCors(opt =>
 // builder.Services.AddSignalR();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IUserRoomRepository), typeof(UserRoomRepository));
+builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
+
 
 // DbContext'i hizmet olarak ekle
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -78,8 +85,3 @@ app.UseHttpsRedirection();
 app.MapControllers(); // Controller rotalarını uygulamaya dahil eder
 app.UseCors("CorsPolicy");
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

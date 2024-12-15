@@ -60,13 +60,15 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
             IsHost = true,
             JoinedAt = DateTime.Now.ToUniversalTime(),
             RoomId = roomId,
+            RoomUniqId = roomUniqId,
             TempUserId = TemporaryUserId,
         });
 
         return new FirstCreateUserRoomResult
         {
             RoomUniqId = roomUniqId,
-            TemporaryUserId = temporaryUser.Id
+            TemporaryUserId = temporaryUser.Id,
+            RoomId = room.Id
         };
     }
 }

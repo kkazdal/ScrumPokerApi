@@ -13,6 +13,10 @@ public class ApplicationDbContext : DbContext
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+    }
+
     public DbSet<Room> Rooms { get; set; }
     public DbSet<UserRoom> UserRooms { get; set; }
     public DbSet<TemporaryUser> TemporaryUsers { get; set; }

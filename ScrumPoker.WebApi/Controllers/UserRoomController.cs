@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Application.Mediator.Commands.UserRoom;
 using ScrumPoker.Application.Mediator.Commands.UserRoomCommands;
+using ScrumPoker.Application.Mediator.Queries.UserRoomsQueries;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ScrumPoker.WebApi.Controllers
@@ -40,6 +41,13 @@ namespace ScrumPoker.WebApi.Controllers
         {
             await _mediator.Send(createUserRoomCommand);
             return Ok("Kayıt başarılı");
+        }
+
+        [HttpGet("GetUserRoomListByRoomId")]
+        public async Task<IActionResult> GetUserRoomListByRoomId(long roomUniqId)
+        {
+            var response = await _mediator.Send(new GetUserRoomListByRoomIdQuery(roomUniqId));
+            return Ok(response);
         }
 
     }

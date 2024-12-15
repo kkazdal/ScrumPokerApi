@@ -8,10 +8,9 @@ public class UserRoom
     // Geçici kullanıcı ilişkisi
     public int? TempUserId { get; set; }
     public TemporaryUser TempUser { get; set; }
-
     public int RoomId { get; set; }
+    public long RoomUniqId { get; set; }
     public Room Room { get; set; }
-
     public DateTime JoinedAt { get; set; }
     public bool IsHost { get; set; } //Kullanıcı odanın sahibi mi?
     public string? UserVote { get; set; }//Kullanıcının verdiği oy
