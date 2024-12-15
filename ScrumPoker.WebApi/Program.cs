@@ -8,6 +8,7 @@ using ScrumPoker.Application.Services;
 using ScrumPoker.Infrastructure.Repositories;
 using ScrumPoker.Infrastructure.Repositories.RoomRepository;
 using ScrumPoker.Infrastructure.Repositories.UserRoomRepositories;
+using ScrumPoker.WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -26,7 +27,7 @@ builder.Services.AddCors(opt =>
             .AllowCredentials();  // Kimlik doğrulama bilgilerine izin ver
     });
 });
-// builder.Services.AddSignalR();
+builder.Services.AddSignalR();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IUserRoomRepository), typeof(UserRoomRepository));
@@ -80,6 +81,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapHub<RoomHub>("/roomHub");
 
 app.UseHttpsRedirection();
 app.MapControllers(); // Controller rotalarını uygulamaya dahil eder

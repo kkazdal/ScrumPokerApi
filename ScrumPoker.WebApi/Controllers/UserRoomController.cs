@@ -1,9 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using ScrumPoker.Application.Interfaces;
+using ScrumPoker.Application.Interfaces.UserRoomInterfaces;
 using ScrumPoker.Application.Mediator.Commands.UserRoom;
 using ScrumPoker.Application.Mediator.Commands.UserRoomCommands;
 using ScrumPoker.Application.Mediator.Queries.UserRoomsQueries;
+using ScrumPoker.WebApi.Hubs;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ScrumPoker.WebApi.Controllers
@@ -12,11 +16,15 @@ namespace ScrumPoker.WebApi.Controllers
     [ApiController]
     public class UserRoomController : ControllerBase
     {
+        private readonly IHubContext<RoomHub> _hubContext;
         private readonly IMediator _mediator;
+        private readonly IUserRoomRepository _userRoomRepository;
 
-        public UserRoomController(IMediator mediator)
+        public UserRoomController(IMediator mediator, IHubContext<RoomHub> hubContext, IUserRoomRepository userRoomRepository)
         {
             _mediator = mediator;
+            _hubContext = hubContext;
+            _userRoomRepository = userRoomRepository;
         }
 
         [HttpPost("FirstCreateUserRoom")]
@@ -45,6 +53,12 @@ namespace ScrumPoker.WebApi.Controllers
             {
                 return BadRequest(new { result.ErrorMessage, result.ErrorCode });
             }
+
+
+            string stringRoomUniqId = createUserRoomCommand.RoomUniqId.ToString();
+            var response = await _userRoomRepository.GetUserRoomListByRoomStringId(stringRoomUniqId);
+
+            await _hubContext.Clients.Group(stringRoomUniqId).SendAsync("ReceiveRoomData", response);
 
             return Ok(result.Data);
         }

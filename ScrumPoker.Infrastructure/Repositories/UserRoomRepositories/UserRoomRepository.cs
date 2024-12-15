@@ -32,4 +32,19 @@ public class UserRoomRepository : IUserRoomRepository
 
         return response;
     }
+
+    public async Task<List<GetUserRoomListByRoomIdResult>> GetUserRoomListByRoomStringId(string roomUniqId)
+    {
+        var response = await (from userRoom in _applicationDbContext.UserRooms
+                              where userRoom.RoomUniqId == (long)Convert.ToDouble(roomUniqId)
+                              join temporaryUser in _applicationDbContext.TemporaryUsers
+                              on userRoom.TempUserId equals temporaryUser.Id
+                              select new GetUserRoomListByRoomIdResult
+                              {
+                                  UserName = temporaryUser.Username,
+                                  UserVote = userRoom.UserVote
+                              }).ToListAsync();
+
+        return response;
+    }
 }
