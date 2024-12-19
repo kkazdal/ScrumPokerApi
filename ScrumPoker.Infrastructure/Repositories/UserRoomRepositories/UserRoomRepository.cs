@@ -47,4 +47,22 @@ public class UserRoomRepository : IUserRoomRepository
 
         return response;
     }
+
+    public async Task<List<GetUserRoomListByRoomIdResult>> GetRoomActiveUserList(string roomUniqId, List<string> activeUsers)
+    {
+        var activeUsersSet = new HashSet<string>(activeUsers); // activeUsers'ı HashSet'e dönüştür
+
+        var response = await (from userRoom in _applicationDbContext.UserRooms
+                              where userRoom.RoomUniqId == (long)Convert.ToDouble(roomUniqId)
+                              join temporaryUser in _applicationDbContext.TemporaryUsers
+                              on userRoom.TempUserId equals temporaryUser.Id
+                              where activeUsersSet.Contains(temporaryUser.Username)  // activeUsers içinde varsa, sadece onları al
+                              select new GetUserRoomListByRoomIdResult
+                              {
+                                  UserName = temporaryUser.Username,
+                                  UserVote = userRoom.UserVote
+                              }).ToListAsync();
+
+        return response;
+    }
 }

@@ -3,6 +3,7 @@ using MediatR;
 using ScrumPoker.Application.BaseResponse;
 using ScrumPoker.Application.Interfaces;
 using ScrumPoker.Application.Interfaces.IRoomRepository;
+using ScrumPoker.Application.Interfaces.TemporaryUserRepsitories;
 using ScrumPoker.Application.Mediator.Commands.UserRoomCommands;
 using ScrumPoker.Application.Mediator.Results.UserRoomResults;
 using ScrumPoker.Domain;
@@ -14,20 +15,20 @@ public class CreateUserRoomHandler : IRequestHandler<CreateUserRoomCommand, Base
 {
     private readonly IRepository<UserRoom> _userRoomRepository;
     private readonly IRepository<TemporaryUser> _temporaryUserRepository;
-    private readonly IRepository<Room> _roomRepository;
     private readonly IRoomRepository _customRoomRepository;
+    private readonly ITemporaryUserRepsitory _customRemporaryUserRepsitory;
 
     public CreateUserRoomHandler(
         IRepository<UserRoom> userRoomRepository,
         IRepository<TemporaryUser> temporaryUserRepository,
-        IRepository<Room> roomRepository,
-        IRoomRepository customRoomRepository
+        IRoomRepository customRoomRepository,
+        ITemporaryUserRepsitory customRemporaryUserRepsitory
         )
     {
         _userRoomRepository = userRoomRepository;
         _temporaryUserRepository = temporaryUserRepository;
-        _roomRepository = roomRepository;
         _customRoomRepository = customRoomRepository;
+        _customRemporaryUserRepsitory = customRemporaryUserRepsitory;
     }
 
     public async Task<BaseResponse<CreateUserRoomResult>> Handle(CreateUserRoomCommand request, CancellationToken cancellationToken)
@@ -45,6 +46,13 @@ public class CreateUserRoomHandler : IRequestHandler<CreateUserRoomCommand, Base
             SessionId = Guid.NewGuid().ToString(),
             Username = request.Username,
         };
+
+        var isUserNameControl = await _customRemporaryUserRepsitory.IsUsernameInRoom(request.Username, request.RoomUniqId);
+
+        if (isUserNameControl != false)
+        {
+            return BaseResponse<CreateUserRoomResult>.Failure("Log in with a different username.", "404");
+        }
 
         int TemporaryUserId = await _temporaryUserRepository.CreateAsync(temporaryUser);
 

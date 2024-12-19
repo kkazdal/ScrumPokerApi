@@ -3,10 +3,12 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Application.Interfaces;
 using ScrumPoker.Application.Interfaces.IRoomRepository;
+using ScrumPoker.Application.Interfaces.TemporaryUserRepsitories;
 using ScrumPoker.Application.Interfaces.UserRoomInterfaces;
 using ScrumPoker.Application.Services;
 using ScrumPoker.Infrastructure.Repositories;
 using ScrumPoker.Infrastructure.Repositories.RoomRepository;
+using ScrumPoker.Infrastructure.Repositories.TemporaryRepository;
 using ScrumPoker.Infrastructure.Repositories.UserRoomRepositories;
 using ScrumPoker.WebApi.Hubs;
 
@@ -32,6 +34,7 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IUserRoomRepository), typeof(UserRoomRepository));
 builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
+builder.Services.AddScoped(typeof(ITemporaryUserRepsitory), typeof(TemporaryUserRepsitory));
 
 
 // DbContext'i hizmet olarak ekle

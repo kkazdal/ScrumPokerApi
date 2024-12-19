@@ -23,6 +23,16 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
 
     public async Task<FirstCreateUserRoomResult> Handle(FirstCreateUserRoomCommand request, CancellationToken cancellationToken)
     {
+
+        TemporaryUser temporaryUser = new TemporaryUser
+        {
+            JoinedAt = DateTime.Now.ToUniversalTime(),
+            SessionId = Guid.NewGuid().ToString(),
+            Username = request.Username,
+        };
+
+        int TemporaryUserId = await _TemporaryUserRepository.CreateAsync(temporaryUser);
+
         //#region ROOM
         //Burası ilk oda oluşturulacağı zaman çağrılacak
         var roomName = request.RoomName ?? "ScrumPokerRoom";
@@ -44,15 +54,6 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
         //Önce oda oluşturuldu
         int roomId = await _RoomRepository.CreateAsync(room);
         //#endregion RoomEND
-
-        TemporaryUser temporaryUser = new TemporaryUser
-        {
-            JoinedAt = DateTime.Now.ToUniversalTime(),
-            SessionId = Guid.NewGuid().ToString(),
-            Username = request.Username,
-        };
-
-        int TemporaryUserId = await _TemporaryUserRepository.CreateAsync(temporaryUser);
 
         //sonra oda ile ilişkili user odası oluşturuldu
         await _UserRoomRepository.CreateAsync(new UserRoom
