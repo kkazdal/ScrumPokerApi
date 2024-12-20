@@ -17,6 +17,13 @@ namespace ScrumPoker.WebApi.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet("GetRoomUniqueByIdQuery")]
+        public async Task<IActionResult> GetRoomUniqueByIdQuery([FromQuery] long roomUniqId)
+        {
+            var response = await _mediator.Send(new GetRoomByRoomUniqueIdQuery(roomUniqId));
+            return Ok(response);
+        }
+
         [HttpGet("GetRoomByIdQuery")]
         public async Task<IActionResult> GetRoomByIdQuery([FromQuery] GetRoomByQuery query)
         {
