@@ -6,6 +6,7 @@ using ScrumPoker.Application.Interfaces;
 using ScrumPoker.Application.Interfaces.UserRoomInterfaces;
 using ScrumPoker.Application.Mediator.Commands.UserRoom;
 using ScrumPoker.Application.Mediator.Commands.UserRoomCommands;
+using ScrumPoker.Application.Mediator.Handlers.UserRoomHandlers;
 using ScrumPoker.Application.Mediator.Queries.UserRoomsQueries;
 using ScrumPoker.WebApi.Hubs;
 using ScrumPoker.WebApi.RoomUsers;
@@ -78,6 +79,20 @@ namespace ScrumPoker.WebApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("ResetUserRoomUserVote")]
+        public async Task<IActionResult> ResetUserRoomUserVote(DeleteUserRoomUserVoteCommand request)
+        {
+            await _mediator.Send(request);
+
+            var activeUsers = RoomService.GetUsersInRoom(request.RoomUniqId.ToString());
+            var signarlRResult = await _userRoomRepository.GetRoomActiveUserList(request.RoomUniqId.ToString(), activeUsers);
+
+            await _hubContext.Clients.Group(request.RoomUniqId.ToString()).SendAsync("ActiveUsers", signarlRResult);
+
+            return Ok("Success");
+        }
+
 
         [HttpGet("GetVoteAndCardInfoByRoomIdUserInfo")]
         public async Task<IActionResult> GetVoteAndCardInfoByRoomIdUserInfo(int tempUserId)

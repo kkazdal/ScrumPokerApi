@@ -10,5 +10,6 @@ public interface IUserRoomRepository
     Task<List<GetUserRoomListByRoomIdResult>> GetRoomActiveUserList(string roomUniqId, List<string> activeUsers);
     Task<GetUserRoomByUserIdResult> GetUserRoomByUserId(int userId);
     Task<GetVoteAndCardInfoByRoomIdResult> GetVoteAndCardInfoByRoomId(int userId);
+    Task<List<GetUserRoomByUserIdResult>> GetUserRoomListByRoomUniqId(long roomUniqIds);
 
 }

@@ -1,6 +1,7 @@
 using AspNetCoreRateLimit;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using ScrumPoker.Application.AutoMapping;
 using ScrumPoker.Application.Interfaces;
 using ScrumPoker.Application.Interfaces.IRoomRepository;
 using ScrumPoker.Application.Interfaces.TemporaryUserRepsitories;
@@ -36,6 +37,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IUserRoomRepository), typeof(UserRoomRepository));
 builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
 builder.Services.AddScoped(typeof(ITemporaryUserRepsitory), typeof(TemporaryUserRepsitory));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 // builder.Services.AddScoped(typeof(IRoomUsers), typeof(RoomService));
 
 // DbContext'i hizmet olarak ekle
