@@ -84,4 +84,20 @@ public class UserRoomRepository : IUserRoomRepository
         return response;
 
     }
+
+    public async Task<GetVoteAndCardInfoByRoomIdResult> GetVoteAndCardInfoByRoomId(int userId)
+    {
+        var response = await (from userRoom in _applicationDbContext.UserRooms
+                              where userRoom.TempUserId == userId
+                              join room in _applicationDbContext.Rooms
+                            on userRoom.RoomId equals room.Id
+                              select new GetVoteAndCardInfoByRoomIdResult
+                              {
+                                  EstimationMethodId = room.EstimationMethodId,
+                                  UserVote = userRoom.UserVote
+                              }).FirstOrDefaultAsync();
+
+        return response;
+
+    }
 }
