@@ -11,6 +11,7 @@ using ScrumPoker.Infrastructure.Repositories.RoomRepository;
 using ScrumPoker.Infrastructure.Repositories.TemporaryRepository;
 using ScrumPoker.Infrastructure.Repositories.UserRoomRepositories;
 using ScrumPoker.WebApi.Hubs;
+using ScrumPoker.WebApi.RoomUsers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -35,7 +36,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IUserRoomRepository), typeof(UserRoomRepository));
 builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
 builder.Services.AddScoped(typeof(ITemporaryUserRepsitory), typeof(TemporaryUserRepsitory));
-
+// builder.Services.AddScoped(typeof(IRoomUsers), typeof(RoomService));
 
 // DbContext'i hizmet olarak ekle
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -8,6 +8,7 @@ using ScrumPoker.Application.Mediator.Commands.UserRoom;
 using ScrumPoker.Application.Mediator.Commands.UserRoomCommands;
 using ScrumPoker.Application.Mediator.Queries.UserRoomsQueries;
 using ScrumPoker.WebApi.Hubs;
+using ScrumPoker.WebApi.RoomUsers;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ScrumPoker.WebApi.Controllers
@@ -69,9 +70,15 @@ namespace ScrumPoker.WebApi.Controllers
         public async Task<IActionResult> UpdateUserRoom(UpdateUserRoomCommand request)
         {
             var response = await _mediator.Send(request);
+
+            var activeUsers = RoomService.GetUsersInRoom(request.RoomUniqId.ToString());
+            var signarlRResult = await _userRoomRepository.GetRoomActiveUserList(request.RoomUniqId.ToString(), activeUsers);
+
+            await _hubContext.Clients.Group(request.RoomUniqId.ToString()).SendAsync("ActiveUsers", signarlRResult);
+
             return Ok(response);
         }
-        
+
         [HttpGet("GetVoteAndCardInfoByRoomIdUserInfo")]
         public async Task<IActionResult> GetVoteAndCardInfoByRoomIdUserInfo(int tempUserId)
         {

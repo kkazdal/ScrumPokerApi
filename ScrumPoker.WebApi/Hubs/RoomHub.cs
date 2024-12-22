@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Application.Interfaces.UserRoomInterfaces;
 using ScrumPoker.Application.Mediator.Results.UserRoomResults;
+using ScrumPoker.WebApi.RoomUsers;
 
 namespace ScrumPoker.WebApi.Hubs;
 
@@ -12,7 +13,7 @@ public class RoomHub : Hub
 {
     private static readonly ConcurrentDictionary<string, string> ConnectionUserMapping = new();
     private readonly IUserRoomRepository _userRoomRepository;
-    private static readonly ConcurrentDictionary<string, HashSet<string>> RoomUsers = new();
+    // private static readonly ConcurrentDictionary<string, HashSet<string>> RoomUsers = new();
 
     public RoomHub(IUserRoomRepository userRoomRepository)
     {
@@ -39,13 +40,7 @@ public class RoomHub : Hub
     {
         try
         {
-            // Kullanıcıyı odaya ekle
-            if (!RoomUsers.ContainsKey(roomUniqId))
-            {
-                RoomUsers[roomUniqId] = new HashSet<string>();
-            }
-
-            RoomUsers[roomUniqId].Add(userName);
+            RoomService.AddUserToRoom(roomUniqId, userName);
 
             await Groups.AddToGroupAsync(Context.ConnectionId, roomUniqId);
             await Clients.Group(roomUniqId).SendAsync("UserJoined", userName);
@@ -68,21 +63,14 @@ public class RoomHub : Hub
 
         try
         {
-            // Odanın kullanıcı listesinden belirtilen userName'i sil
-            if (RoomUsers.ContainsKey(roomId) && RoomUsers[roomId].Contains(userName))
-            {
-                RoomUsers[roomId].Remove(userName); // Kullanıcıyı odadan çıkar
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId); // Kullanıcının bağlantısını odadan çıkar
-                Console.WriteLine($"User '{userName}' has left room '{roomId}'.");
+            RoomService.RemoveUserFromRoom(roomId, userName);
 
-                // Oda grubuna kullanıcının ayrıldığını bildir
-                await Clients.Group(roomId).SendAsync("UserLeft", userName);
-            }
-            else
-            {
-                Console.WriteLine($"User '{userName}' not found in room '{roomId}'.");
-                await Clients.Caller.SendAsync("Error", $"User '{userName}' not found in room '{roomId}'.");
-            }
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId); // Kullanıcının bağlantısını odadan çıkar
+            Console.WriteLine($"User '{userName}' has left room '{roomId}'.");
+
+            // Oda grubuna kullanıcının ayrıldığını bildir
+            await Clients.Group(roomId).SendAsync("UserLeft", userName);
+
         }
         catch (Exception ex)
         {
@@ -102,17 +90,12 @@ public class RoomHub : Hub
         try
         {
             // Odanın kullanıcılarını al
-            if (RoomUsers.ContainsKey(roomId))
-            {
-                var activeUsers = RoomUsers[roomId].ToList();  // Oda içindeki aktif kullanıcıları al
-                var response = await _userRoomRepository.GetRoomActiveUserList(roomId, activeUsers);
 
-                await Clients.Caller.SendAsync("ActiveUsers", response);  // İstemciye aktif kullanıcıları gönder
-            }
-            else
-            {
-                await Clients.Caller.SendAsync("Error", $"No active users found in room '{roomId}'.");
-            }
+            var activeUsers = RoomService.GetUsersInRoom(roomId);  // Oda içindeki aktif kullanıcıları al
+            var response = await _userRoomRepository.GetRoomActiveUserList(roomId, activeUsers);
+
+            await Clients.Caller.SendAsync("ActiveUsers", response);  // İstemciye aktif kullanıcıları gönder
+
         }
         catch (Exception ex)
         {
