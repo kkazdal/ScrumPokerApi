@@ -57,7 +57,7 @@ namespace ScrumPoker.WebApi.Controllers
 
             string stringRoomUniqId = createUserRoomCommand.RoomUniqId.ToString();
             var response = await _userRoomRepository.GetUserRoomListByRoomStringId(stringRoomUniqId);
-            await _hubContext.Clients.Group(stringRoomUniqId).SendAsync("ReceiveRoomData", response);
+            await _hubContext.Clients.Group(stringRoomUniqId).SendAsync("ActiveUsers", response);
 
             return Ok(result.Data);
         }
@@ -69,15 +69,10 @@ namespace ScrumPoker.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("UpdateUserRoom")]
+        [HttpPost("UpdateUserRoom")]
         public async Task<IActionResult> UpdateUserRoom(UpdateUserRoomCommand request)
         {
             var response = await _mediator.Send(request);
-
-            string stringRoomUniqId = request.RoomUniqId.ToString();
-            var list = await _userRoomRepository.GetUserRoomListByRoomStringId(stringRoomUniqId);
-            await _hubContext.Clients.Group(stringRoomUniqId).SendAsync("ReceiveRoomData", list);
-
 
             return Ok(response);
         }

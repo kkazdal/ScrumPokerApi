@@ -65,4 +65,23 @@ public class UserRoomRepository : IUserRoomRepository
 
         return response;
     }
+
+    public async Task<GetUserRoomByUserIdResult> GetUserRoomByUserId(int userId)
+    {
+        var response = await (from userRoom in _applicationDbContext.UserRooms
+                              where userRoom.TempUserId == userId
+                              select new GetUserRoomByUserIdResult
+                              {
+                                  UserRoomId = userRoom.Id,
+                                  TempUserId = userRoom.TempUserId,
+                                  RoomId = userRoom.RoomId,
+                                  RoomUniqId = userRoom.RoomUniqId,
+                                  JoinedAt = userRoom.JoinedAt,
+                                  IsHost = userRoom.IsHost,
+                                  UserVote = userRoom.UserVote,
+                              }).FirstOrDefaultAsync();
+
+        return response;
+
+    }
 }

@@ -18,6 +18,8 @@ public class RoomRepository : IRoomRepository
     public async Task<GetRoomByQueryResult> GetRoomByRoomUniqueId(long roomUniqueId)
     {
         var response = await (from room in _applicationDbContext.Rooms
+                              join userRoom in _applicationDbContext.UserRooms
+                              on room.Id equals userRoom.RoomId
                               where room.RoomUniqId == roomUniqueId
                               select new GetRoomByQueryResult
                               {
@@ -25,7 +27,7 @@ public class RoomRepository : IRoomRepository
                                   CreatedAt = room.CreatedAt,
                                   EstimationMethodId = room.EstimationMethodId,
                                   RoomName = room.RoomName,
-                                  RoomUniqId = room.RoomUniqId
+                                  RoomUniqId = room.RoomUniqId,
                               }).FirstOrDefaultAsync();
 
         return response;
