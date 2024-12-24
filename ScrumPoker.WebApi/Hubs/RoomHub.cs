@@ -53,6 +53,21 @@ public class RoomHub : Hub
         }
     }
 
+    public async Task SetShowEstimateNotify(string roomUniqId, bool show)
+    {
+        try
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomUniqId);
+            await Clients.Group(roomUniqId).SendAsync("GetShowEstimateNotify", show);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+            await Clients.Caller.SendAsync("Error", "An unexpected error occurred.");
+            throw;
+        }
+    }
+
     public async Task LeaveRoom(string roomId, string userName)
     {
         if (string.IsNullOrEmpty(roomId) || string.IsNullOrEmpty(userName))
