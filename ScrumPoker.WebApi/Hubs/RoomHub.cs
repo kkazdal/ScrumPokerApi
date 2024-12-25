@@ -59,7 +59,6 @@ public class RoomHub : Hub
         {
             RoomService.ShowRoomVote(roomUniqId, show);
 
-
             await Groups.AddToGroupAsync(Context.ConnectionId, roomUniqId);
             await Clients.Group(roomUniqId).SendAsync("GetShowEstimateNotify", show);
         }
@@ -76,7 +75,6 @@ public class RoomHub : Hub
         try
         {
             var roomInfo = RoomService.GetRoomInfo(roomUniqId);
-
 
             await Groups.AddToGroupAsync(Context.ConnectionId, roomUniqId);
             await Clients.Group(roomUniqId).SendAsync("GetShowEstimateNotify", roomInfo.IsShowVote);
@@ -126,7 +124,6 @@ public class RoomHub : Hub
         try
         {
             // Odanın kullanıcılarını al
-
             var activeUsers = RoomService.GetUsersInRoom(roomId);  // Oda içindeki aktif kullanıcıları al
             var response = await _userRoomRepository.GetRoomActiveUserList(roomId, activeUsers);
 

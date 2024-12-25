@@ -57,6 +57,11 @@ namespace ScrumPoker.WebApi.Controllers
             }
 
 
+            var activeUsers = RoomService.GetUsersInRoom(createUserRoomCommand.RoomUniqId.ToString());
+            var signarlRResult = await _userRoomRepository.GetRoomActiveUserList(createUserRoomCommand.RoomUniqId.ToString(), activeUsers);
+
+            await _hubContext.Clients.Group(createUserRoomCommand.RoomUniqId.ToString()).SendAsync("ActiveUsers", signarlRResult);
+            
             return Ok(result.Data);
         }
 
@@ -90,7 +95,7 @@ namespace ScrumPoker.WebApi.Controllers
 
             await _hubContext.Clients.Group(request.RoomUniqId.ToString()).SendAsync("ActiveUsers", signarlRResult);
 
-            return Ok("Success");
+            return Ok("Success.");
         }
 
 
