@@ -69,7 +69,7 @@ public class FirstCreateUserRoomHandler : IRequestHandler<FirstCreateUserRoomCom
         {
             RoomUniqId = roomUniqId,
             TemporaryUserId = temporaryUser.Id,
-            RoomId = room.Id
+            RoomId = room.Id,
         };
     }
 }
