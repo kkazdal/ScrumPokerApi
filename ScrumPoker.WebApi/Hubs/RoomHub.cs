@@ -32,7 +32,7 @@ public class RoomHub : Hub
         {
             Console.WriteLine($"Client disconnected: {Context.ConnectionId} (User: {userName})");
         }
-
+        
         await base.OnDisconnectedAsync(exception);
     }
 
