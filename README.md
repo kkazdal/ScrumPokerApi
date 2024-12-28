@@ -64,7 +64,7 @@ A robust backend for the Scrum Poker application, built with **.NET** and follow
 
 | Technology               | Usage                                   |
 |---------------------------|-----------------------------------------|
-| **.NET 6**               | API development                        |
+| **.NET 8**                | API development                        |
 | **Entity Framework Core** | ORM for database operations            |
 | **PostgreSQL**            | Database for storing persistent data   |
 | **SignalR**               | Real-time communication framework      |
